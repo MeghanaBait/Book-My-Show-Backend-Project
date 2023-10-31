@@ -1,4 +1,4 @@
-package com.example.BookMyShow.RequestDtos;
+package com.example.BookMyShow.Dtos.RequestDtos;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -8,8 +8,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class AddUserRequest {
     //DTO is a class wich contains customized parameters as per our need. this is used for security purpose
     //2.DTOs are light weight classes: t

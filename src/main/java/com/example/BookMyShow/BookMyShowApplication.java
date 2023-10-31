@@ -11,3 +11,10 @@ public class BookMyShowApplication {
 	}
 
 }
+
+
+//For a given theater find the total revenue on given day
+//find out maximum earning of a movie for a particular show(BoxOffice Collection
+//show my bookings for a user
+//get movies details
+//Get list of shows for a movie on a particular day

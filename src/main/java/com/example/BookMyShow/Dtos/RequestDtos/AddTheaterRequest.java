@@ -1,4 +1,4 @@
-package com.example.BookMyShow.RequestDtos;
+package com.example.BookMyShow.Dtos.RequestDtos;
 
 import com.example.BookMyShow.Enum.City;
 import lombok.*;

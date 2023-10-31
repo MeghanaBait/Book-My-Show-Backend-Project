@@ -1,7 +1,8 @@
 package com.example.BookMyShow.Transformers;
 
+import com.example.BookMyShow.Dtos.ResponseDtos.UserDetailsResponse;
 import com.example.BookMyShow.Models.User;
-import com.example.BookMyShow.RequestDtos.AddUserRequest;
+import com.example.BookMyShow.Dtos.RequestDtos.AddUserRequest;
 
 public class UserTransformers {
 
@@ -15,5 +16,16 @@ public class UserTransformers {
                 .build();
 
         return userobj;
+    }
+
+    public static UserDetailsResponse convertUserDetailsResponseTODto(User user){
+        UserDetailsResponse userDetailsResponse = UserDetailsResponse.builder()
+                .age(user.getAge())
+                .name(user.getName())
+                .mobNo(user.getMobNo())
+                .email(user.getEmail())
+                .build();
+
+        return userDetailsResponse;
     }
 }

@@ -1,7 +1,8 @@
 package com.example.BookMyShow.Controllers;
 
-import com.example.BookMyShow.Dtos.RequestDtos.AddTheaterRequest;
-import com.example.BookMyShow.Services.TheaterService;
+import com.example.BookMyShow.Dtos.RequestDtos.AddMovieRequest;
+import com.example.BookMyShow.Services.MovieService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/theater")
-public class TheaterController {
-
+@RequestMapping("movie")
+@Slf4j
+public class MovieController {
     @Autowired
-    TheaterService theaterService;
+    private MovieService movieService;
 
-    @PostMapping("/add")
-    public ResponseEntity addTheater(@RequestBody AddTheaterRequest addTheaterRequest){
+    @PostMapping("add")
+    public ResponseEntity addMovie(@RequestBody AddMovieRequest addMovieRequest){
         try{
-            String result = theaterService.addTheater(addTheaterRequest);
-            return new ResponseEntity(result, HttpStatus.CREATED);
+            log.info("We have request : {}",addMovieRequest.toString());
+            String result = movieService.addMovie(addMovieRequest);
+            return new ResponseEntity(result, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }

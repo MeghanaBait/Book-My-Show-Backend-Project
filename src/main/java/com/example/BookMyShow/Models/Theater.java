@@ -19,6 +19,8 @@ public class Theater {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+
+    @Column(unique = true)
     private String address;
 
     @Enumerated(value = EnumType.STRING)
@@ -26,5 +28,8 @@ public class Theater {
 
     @OneToMany(mappedBy = "theater",cascade = CascadeType.ALL)
     private List<TheaterSeat> theaterSeatList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "theater",cascade = CascadeType.ALL)
+    private List<Show> showList = new ArrayList<>();
 
 }

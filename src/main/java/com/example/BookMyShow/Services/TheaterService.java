@@ -4,23 +4,22 @@ import com.example.BookMyShow.Enum.SeatType;
 import com.example.BookMyShow.Models.Theater;
 import com.example.BookMyShow.Models.TheaterSeat;
 import com.example.BookMyShow.Repository.TheaterRepository;
-import com.example.BookMyShow.RequestDtos.AddTheaterRequest;
+import com.example.BookMyShow.Dtos.RequestDtos.AddTheaterRequest;
+import com.example.BookMyShow.Transformers.TheaterTransformers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class TheaterService {
 
     @Autowired
     TheaterRepository theaterRepository;
     public String addTheater(AddTheaterRequest addTheaterRequest) {
         //1.Create the theater Entity
-        Theater theater = Theater.builder()
-                .name(addTheaterRequest.getName())
-                .address(addTheaterRequest.getAddress())
-                .city(addTheaterRequest.getCity())
-                .build();
+        Theater theater = TheaterTransformers.convertAddTheaterReqToTheaterEntity(addTheaterRequest);
+
 
         //2. Create the theater seats Entity
         createTheaterSeats(theater, addTheaterRequest);
@@ -43,7 +42,8 @@ public class TheaterService {
                 row++;
                 ch = 'A';
             }
-            String seatNo = row +""+ch++;
+            String seatNo = row +""+ch;
+            ch++;
 
             TheaterSeat theaterSeat = TheaterSeat.builder()
                     .seatNo(seatNo)
