@@ -1,7 +1,11 @@
 package com.example.BookMyShow.Services;
 
 import com.example.BookMyShow.Dtos.RequestDtos.AddShowSeatReq;
+import com.example.BookMyShow.Dtos.ResponseDtos.ShowDetailsResponse;
+import com.example.BookMyShow.Dtos.ResponseDtos.ShowResponseForMovie;
+import com.example.BookMyShow.Dtos.ResponseDtos.UserDetailsResponse;
 import com.example.BookMyShow.Enum.SeatType;
+import com.example.BookMyShow.Exceptions.MovieNotFound;
 import com.example.BookMyShow.Exceptions.ShowNotFound;
 import com.example.BookMyShow.Models.*;
 import com.example.BookMyShow.Repository.MovieRepository;
@@ -13,6 +17,8 @@ import com.example.BookMyShow.Transformers.ShowTransformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,5 +120,57 @@ public class ShowService {
         Movie movie = movieRepository.findById(movieId).get();
 
         return movie.getMovieName();
+    }
+
+    public List<String> getAvailableShowSeats(Integer showId) throws Exception {
+        Optional<Show> optionalShow = showRepository.findById(showId);
+        if(!optionalShow.isPresent()){
+            throw new ShowNotFound("Invalid Show Id");
+        }
+
+        Show show = optionalShow.get();
+
+        List<ShowSeat> showSeatList = show.getShowSeatList();
+
+        List<String> availableShowSeats = new ArrayList<>();
+
+        for(ShowSeat showSeat : showSeatList){
+            if(showSeat.getIsAvailable()){
+                availableShowSeats.add(showSeat.getShowSeatNo());
+            }
+        }
+        return availableShowSeats;
+    }
+
+    public ShowDetailsResponse getShowDetails(Integer showId) throws Exception {
+        Optional<Show> optionalShow = showRepository.findById(showId);
+
+        if(!optionalShow.isPresent()){
+            throw new ShowNotFound("Invalid Show Id");
+        }
+
+        Show show = optionalShow.get();
+
+        ShowDetailsResponse showDetailsResponse = ShowTransformers.convertEntityToResponse(show);
+        return showDetailsResponse;
+
+    }
+
+    public List<ShowResponseForMovie> getShowsForAMovieOnAParticularDay(Integer movieId, Date date) throws MovieNotFound {
+        Optional<Movie> optionalMovie = movieRepository.findById(movieId);
+        if(!optionalMovie.isPresent()){
+            throw new MovieNotFound("Movie Id is invalid");
+        }
+
+        Movie movie = optionalMovie.get();
+
+        List<ShowResponseForMovie> showResponseForMovies = new ArrayList<>();
+
+        List<Show> showList = movie.getShowList();
+
+        for (Show show : showList){
+            showResponseForMovies.add(ShowTransformers.convertEntityToShowResponseForMovie(show));
+        }
+        return showResponseForMovies;
     }
 }

@@ -1,8 +1,11 @@
 package com.example.BookMyShow.Services;
 
 import com.example.BookMyShow.Enum.SeatType;
+import com.example.BookMyShow.Exceptions.TheaterNotFound;
+import com.example.BookMyShow.Models.Show;
 import com.example.BookMyShow.Models.Theater;
 import com.example.BookMyShow.Models.TheaterSeat;
+import com.example.BookMyShow.Models.Ticket;
 import com.example.BookMyShow.Repository.TheaterRepository;
 import com.example.BookMyShow.Dtos.RequestDtos.AddTheaterRequest;
 import com.example.BookMyShow.Transformers.TheaterTransformers;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TheaterService {
 
@@ -78,5 +83,24 @@ public class TheaterService {
 
         theaterRepository.save(theater);
 
+    }
+
+    public Long getTotalRevenue(Integer theaterId) throws TheaterNotFound {
+        Optional<Theater> optionalTheater = theaterRepository.findById(theaterId);
+        if(!optionalTheater.isPresent()){
+            throw new TheaterNotFound("Theater Id is Invalid");
+        }
+
+        Theater theater = optionalTheater.get();
+
+        List<Show> showList = theater.getShowList();
+        Long revenue = 0L;
+        for(Show show : showList){
+            List<Ticket> ticketList = show.getTicketList();
+            for(Ticket ticket : ticketList){
+                revenue += ticket.getTotalPrice();
+            }
+        }
+        return revenue;
     }
 }

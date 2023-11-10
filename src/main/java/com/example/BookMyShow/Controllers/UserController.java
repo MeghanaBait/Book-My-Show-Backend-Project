@@ -43,8 +43,18 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity getUserDetails(@PathVariable ("userId") Integer userId){
         try{
-            UserDetailsResponse userDetailsResponse = userService.getTicketDetails(userId);
+            UserDetailsResponse userDetailsResponse = userService.getUserDetails(userId);
             return new ResponseEntity(userDetailsResponse, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/Bookings/{userId}")
+    public ResponseEntity getUserBookings(@PathVariable("userId") Integer userId){
+        try{
+            List<UserTicketDetailsResponse> userTicketDetailsResponses = userService.getUserBookings(userId);
+            return new ResponseEntity(userTicketDetailsResponses,HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
