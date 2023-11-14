@@ -32,3 +32,4 @@ This project is a Spring Boot implementation of the backend APIs for a ticket bo
 - Spring Data Jpa (Hibernate)
 - MySQL
 - Maven
+- Swagger🔗(http://localhost:8080/swagger-ui/index.html)
